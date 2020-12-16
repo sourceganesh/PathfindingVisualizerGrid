@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" style="padding-left: 40px;" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="type_toggle(this)" href="#" data-type='0'>Wall</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="type_toggle(this)" href="#" data-type='1'>Initial</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="type_toggle(this)" href="#" data-type='2'>End</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+    <section class="hero-section">
+      <div id="grid-view">
+      </div>
+    </section>
+
+    <div id="grid-cell--1--1" onclick="toggle_style(this)" class="grid-cells" style="display: none;" data-i="-1" data-j="-1"></div>
+
+    <script>
+
+      function render(n){  
+
+        var grid_view_html = "";
+
+        for(i=0; i<n; i++){
+          grid_view_html += '<div class="grid-row">'
+          for(j=0;j<n; j++){
+            grid_view_html +='<div id="grid-cell-'+i+'-'+j+'" onclick="toggle_style(this)" class="grid-cells" data-i="'+i+'" data-j="'+j+'"></div>'
+          }
+          grid_view_html += '</div>'
+        }
+        document.getElementById('grid-view').innerHTML = grid_view_html;
+      }
+
+      function create_array(rows) {
+        var arr = [];
+
+        for (var i=0;i<rows;i++) {
+          var row_arr = [];
+          for (var j=0;j<rows;j++) {
+            row_arr.push(1);
+          }
+          arr.push(row_arr);
+        }
+
+        return arr;
+      }
+
+      function toggle_style(element){
+        if(type===0){
+          i = parseInt(element.dataset.i);
+          j = parseInt(element.dataset.j);
+
+          if(get_matrix[i][j]){
+            element.classList.add("wall");
+            get_matrix[i][j] = 0;
+            console.log(get_matrix);
+          } else {
+            element.classList.remove("wall");
+            get_matrix[i][j] = 1;
+            console.log(get_matrix);
+          }
+        }
+        else if(type===1){
+          i = parseInt(element.dataset.i);
+          j = parseInt(element.dataset.j);
+
+          if( !(init_i==i&&init_j==j) && get_matrix[i][j] && !(i==end_i&&j==end_j)){
+            document.getElementById("grid-cell-"+init_i+"-"+init_j).classList.remove("init");
+            element.classList.add("init");
+            init_i = i;
+            init_j = j;            
+          }
+        }
+        else if(type===2){
+          i = parseInt(element.dataset.i);
+          j = parseInt(element.dataset.j);
+
+          if(!(end_i==i&&end_j==j) && get_matrix[i][j] && !(i==init_i&&j==init_j)){
+            document.getElementById("grid-cell-"+end_i+"-"+end_j).classList.remove("end");
+            element.classList.add("end");
+            end_i = i;
+            end_j = j;
+          }
+        }
+      }
+
+      function type_toggle(element){
+        type_element = parseInt(element.dataset.type);
+        type = type_element;
+        console.log(type);
+      }
+
+      var n = 22;
+      var get_matrix = create_array(n);
+      var type = 0;
+      var init_i=-1, init_j=-1, end_i=-1, end_j=-1;
+      console.log(get_matrix);
+      render(n);
+
+    </script>
+
+  </body>
+</html>

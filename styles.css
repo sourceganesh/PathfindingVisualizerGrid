@@ -1,0 +1,42 @@
+html,body{
+  height: 100%;
+}
+
+.hero-section{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -72px;
+}
+
+#grid-view{
+  display: table;
+}
+.grid-row{
+  display: table-row;
+}
+
+.grid-cells{
+  display: table-cell;
+  border: 1px solid black;  
+  height: 30px;
+  width: 30px;
+  text-align: center;
+}
+
+.wall{
+  background-color: blueviolet;
+}
+
+.init{
+  background-color: brown;
+}
+
+.end{
+  background-color: coral;
+}
+
+.nav-link{
+  font-size: 24px;
+}
