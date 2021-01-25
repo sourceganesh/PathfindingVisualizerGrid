@@ -24,6 +24,9 @@
             <li class="nav-item">
               <a class="nav-link" onclick="type_toggle(this)" href="#" data-type='2'>End</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="vizualize_bfs()" href="#" data-type='2'>bfs</a>
+            </li>
           </ul>
         </div>
     </nav>
@@ -115,6 +118,93 @@
       var init_i=-1, init_j=-1, end_i=-1, end_j=-1;
       console.log(get_matrix);
       render(n);
+
+      function bfs(node_matrix, init_i, init_j, end_i, end_j, n){
+        initial_node = [init_i,init_j]
+        end_node = [end_i,end_j]
+
+        var visited_arr = [];
+        for (var i=0;i<n;i++) {
+          var row_arr = [];
+          for (var j=0;j<n;j++) {
+            row_arr.push(0);
+          }
+          visited_arr.push(row_arr);
+        }
+
+        var in_queue = [];
+        for (var i=0;i<n;i++) {
+          var row_arr = [];
+          for (var j=0;j<n;j++) {
+            row_arr.push(0);
+          }
+          in_queue.push(row_arr);
+        }
+        
+        queue = [];
+        var k = 0
+        queue.push(initial_node)
+        while(queue.length){
+          k+=1
+          node = queue.shift();
+          if( !(node[0]==initial_node[0] && node[1]==initial_node[1]) )
+            mark_visited(node[0],node[1],500+50*k)
+          if(node[0]+1<n){
+            if(end_node[0] == node[0] + 1 && end_node[1] == node[1])
+              return true;
+            else
+              if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]] && !in_queue[node[0]+1][node[1]]){
+                queue.push([node[0]+1,node[1]])
+                in_queue[node[0]+1][node[1]] = 1
+              }
+          }
+          if(node[1]+1<n){
+            if(end_node[0] == node[0] && end_node[1] == node[1] + 1)
+              return true;
+            else
+              if(!visited_arr[node[0]][node[1]+1] && node_matrix[node[0]][node[1]+1] && !in_queue[node[0]][node[1]+1]){
+                queue.push([node[0],node[1]+1])
+                in_queue[node[0]][node[1]+1] = 1
+              }
+          }
+          if(node[0]-1>=0){
+            if(end_node[0] == node[0] - 1 && end_node[1] == node[1])
+              return true;
+            else
+              if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]] && !in_queue[node[0]-1][node[1]]){
+                queue.push([node[0]-1,node[1]])
+                in_queue[node[0]-1][node[1]] = 1
+              }
+          }
+          if(node[1]-1>=0){
+            if(end_node[0] == node[0] && end_node[1] == node[1] - 1)
+              return true;
+            else
+              if(!visited_arr[node[0]][node[1]-1] && node_matrix[node[0]][node[1]-1] && !in_queue[node[0]][node[1]-1]){
+                queue.push([node[0],node[1]-1])
+                in_queue[node[0]][node[1]-1] = 1
+              }
+          }
+          visited_arr[node[0]][node[1]];
+        } 
+      }
+
+      function dfs(node_matrix, init_i, init_j, end_i, end_j, n){
+        
+      }
+
+      function mark_visited(i,j,t){
+        setTimeout(function() {document.getElementById("grid-cell-"+i+"-"+j).classList.add("visited");}, t)
+      }
+
+
+      function vizualize_bfs(){
+        bfs(get_matrix, init_i, init_j, end_i, end_j, n);
+      }
+
+      function vizualize_dfs(){
+        dfs(get_matrix, init_i, init_j, end_i, end_j, n);
+      }
 
     </script>
 

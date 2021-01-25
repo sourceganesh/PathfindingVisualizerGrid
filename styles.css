@@ -37,6 +37,10 @@ html,body{
   background-color: coral;
 }
 
+.visited{
+  background-color: blue;
+}
+
 .nav-link{
   font-size: 24px;
 }
