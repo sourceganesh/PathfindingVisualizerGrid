@@ -78,11 +78,9 @@
           if(get_matrix[i][j]){
             element.classList.add("wall");
             get_matrix[i][j] = 0;
-            console.log(get_matrix);
           } else {
             element.classList.remove("wall");
             get_matrix[i][j] = 1;
-            console.log(get_matrix);
           }
         }
         else if(type===1){
@@ -112,14 +110,12 @@
       function type_toggle(element){
         type_element = parseInt(element.dataset.type);
         type = type_element;
-        console.log(type);
       }
 
       var n = 22;
       var get_matrix = create_array(n);
       var type = 0;
       var init_i=-1, init_j=-1, end_i=-1, end_j=-1;
-      console.log(get_matrix);
       render(n);
 
       function bfs(node_matrix, init_i, init_j, end_i, end_j, n){
@@ -150,47 +146,40 @@
         while(queue.length){
           k+=1
           node = queue.shift();
+          if(node[0]==end_node[0] && node[1]==end_node[1]){
+            visited_arr[node[0]][node[1]] = 1
+            return true
+          }
           if( !(node[0]==initial_node[0] && node[1]==initial_node[1]) ){
             mark_visited(node[0],node[1],500+50*k)
             visited_arr[node[0]][node[1]] = 1
           }
           if(node[0]+1<n){
-            if(end_node[0] == node[0] + 1 && end_node[1] == node[1])
-              return true;
-            else
-              if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]] && !in_queue[node[0]+1][node[1]]){
-                queue.push([node[0]+1,node[1]])
-                in_queue[node[0]+1][node[1]] = 1
-              }
+            if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]] && !in_queue[node[0]+1][node[1]]){
+              queue.push([node[0]+1,node[1]])
+              in_queue[node[0]+1][node[1]] = 1
+            }
           }
           if(node[1]+1<n){
-            if(end_node[0] == node[0] && end_node[1] == node[1] + 1)
-              return true;
-            else
-              if(!visited_arr[node[0]][node[1]+1] && node_matrix[node[0]][node[1]+1] && !in_queue[node[0]][node[1]+1]){
-                queue.push([node[0],node[1]+1])
-                in_queue[node[0]][node[1]+1] = 1
-              }
+            if(!visited_arr[node[0]][node[1]+1] && node_matrix[node[0]][node[1]+1] && !in_queue[node[0]][node[1]+1]){
+              queue.push([node[0],node[1]+1])
+              in_queue[node[0]][node[1]+1] = 1
+            }
           }
           if(node[0]-1>=0){
-            if(end_node[0] == node[0] - 1 && end_node[1] == node[1])
-              return true;
-            else
-              if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]] && !in_queue[node[0]-1][node[1]]){
-                queue.push([node[0]-1,node[1]])
-                in_queue[node[0]-1][node[1]] = 1
-              }
+            if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]] && !in_queue[node[0]-1][node[1]]){
+              queue.push([node[0]-1,node[1]])
+              in_queue[node[0]-1][node[1]] = 1
+            }
           }
           if(node[1]-1>=0){
-            if(end_node[0] == node[0] && end_node[1] == node[1] - 1)
-              return true;
-            else
-              if(!visited_arr[node[0]][node[1]-1] && node_matrix[node[0]][node[1]-1] && !in_queue[node[0]][node[1]-1]){
-                queue.push([node[0],node[1]-1])
-                in_queue[node[0]][node[1]-1] = 1
-              }
+            if(!visited_arr[node[0]][node[1]-1] && node_matrix[node[0]][node[1]-1] && !in_queue[node[0]][node[1]-1]){
+              queue.push([node[0],node[1]-1])
+              in_queue[node[0]][node[1]-1] = 1
+            }
           }
         } 
+        return false;
       }
 
       function dfs(node_matrix, init_i, init_j, end_i, end_j, n){
@@ -220,6 +209,10 @@
         while(stack.length){
           k+=1
           node = stack.pop()
+          if(node[0]==end_node[0] && node[1]==end_node[1]){
+            visited_arr[node[0]][node[1]] = 1
+            return true
+          }
           if( !(node[0]==initial_node[0] && node[1]==initial_node[1]) ){
             mark_visited(node[0],node[1],500+50*k)
             visited_arr[node[0]][node[1]] = 1
@@ -230,8 +223,6 @@
             }
           }
           if(node[0]+1<n){
-            if(end_node[0] == node[0]+1 && end_node[1] == node[1])
-              return true;
             if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]] && !in_stack[node[0]+1][node[1]]){
               stack.push([node[0]+1,node[1]])
             }
@@ -242,13 +233,12 @@
             }
           }
           if(node[0]-1>=0){
-            if(end_node[0] == node[0] - 1 && end_node[1] == node[1])
-              return true;
             if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]] && !in_stack[node[0]-1][node[1]]){
               stack.push([node[0]-1,node[1]])
             }
           }
         }
+        return false;
       }
 
       function mark_visited(i,j,t){
