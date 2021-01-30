@@ -31,6 +31,9 @@
             <li class="nav-item">
               <a class="nav-link" onclick="vizualize_dfs()" href="#" data-type='2'>DFS</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" onclick="vizualize_dijkstra()" href="#" data-type='2'>Dijkstra</a>
+            </li>
           </ul>
         </div>
     </nav>
@@ -41,7 +44,17 @@
 
     <div id="grid-cell--1--1" onclick="toggle_style(this)" class="grid-cells" style="display: none;" data-i="-1" data-j="-1"></div>
 
+    <script src="./bfs.js"></script>
+    <script src="./dfs.js"></script>
+    <script src="./dijkstra.js"></script>
+
     <script>
+
+      var n = 22;
+      var get_matrix = create_array(n);
+      var type = 0;
+      var init_i=-1, init_j=-1, end_i=-1, end_j=-1;
+      render(n);
 
       function render(n){  
 
@@ -113,142 +126,6 @@
         type = type_element;
       }
 
-      var n = 22;
-      var get_matrix = create_array(n);
-      var type = 0;
-      var init_i=-1, init_j=-1, end_i=-1, end_j=-1;
-      render(n);
-
-      function bfs(node_matrix, init_i, init_j, end_i, end_j, n){
-        initial_node = [init_i,init_j]
-        end_node = [end_i,end_j]
-
-        var visited_arr = [];
-        for (var i=0;i<n;i++) {
-          var row_arr = [];
-          for (var j=0;j<n;j++) {
-            row_arr.push(0);
-          }
-          visited_arr.push(row_arr);
-        }
-
-        var in_path = [];
-        for (var i=0;i<n;i++) {
-          var row_arr = [];
-          for (var j=0;j<n;j++) {
-            row_arr.push([]);
-          }
-          in_path.push(row_arr);
-        }
-        
-        queue = [];
-        var k = 0
-        queue.push(initial_node)
-        while(queue.length){
-          k+=1
-          node = queue.shift();
-          if(node[0]==end_node[0] && node[1]==end_node[1]){
-            visited_arr[node[0]][node[1]] = 1
-            trace_path(in_path, initial_node, end_node, k)
-            return true
-          }
-          if( !(node[0]==initial_node[0] && node[1]==initial_node[1]) ){
-            mark_visited(node[0],node[1],500+50*k)
-            visited_arr[node[0]][node[1]] = 1
-          }
-          if(node[0]+1<n){
-            if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]] && !in_path[node[0]+1][node[1]].length){
-              queue.push([node[0]+1,node[1]])
-              in_path[node[0]+1][node[1]] = [node[0],node[1]]
-
-            }
-          }
-          if(node[1]+1<n){
-            if(!visited_arr[node[0]][node[1]+1] && node_matrix[node[0]][node[1]+1] && !in_path[node[0]][node[1]+1].length){
-              queue.push([node[0],node[1]+1])
-              in_path[node[0]][node[1]+1] = [node[0],node[1]]
-            }
-          }
-          if(node[0]-1>=0){
-            if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]] && !in_path[node[0]-1][node[1]].length){
-              queue.push([node[0]-1,node[1]])
-              in_path[node[0]-1][node[1]] = [node[0],node[1]]
-            }
-          }
-          if(node[1]-1>=0){
-            if(!visited_arr[node[0]][node[1]-1] && node_matrix[node[0]][node[1]-1] && !in_path[node[0]][node[1]-1].length){
-              queue.push([node[0],node[1]-1])
-              in_path[node[0]][node[1]-1] = [node[0],node[1]]
-            }
-          }
-        } 
-        return false;
-      }
-
-      function dfs(node_matrix, init_i, init_j, end_i, end_j, n){
-        initial_node = [init_i,init_j]
-        end_node = [end_i,end_j]
-
-        var visited_arr = [];
-        for (var i=0;i<n;i++) {
-          var row_arr = [];
-          for (var j=0;j<n;j++) {
-            row_arr.push(0);
-          }
-          visited_arr.push(row_arr);
-        }
-
-        var in_path = [];
-        for (var i=0;i<n;i++) {
-          var row_arr = [];
-          for (var j=0;j<n;j++) {
-            row_arr.push([]);
-          }
-          in_path.push(row_arr);
-        }
-
-        stack = [initial_node]
-        var k = 0
-        while(stack.length){
-          k+=1
-          node = stack.pop()
-          if(node[0]==end_node[0] && node[1]==end_node[1]){
-            visited_arr[node[0]][node[1]] = 1
-            trace_path(in_path,initial_node,end_node,k)
-            return true
-          }
-          if( !(node[0]==initial_node[0] && node[1]==initial_node[1]) ){
-            mark_visited(node[0],node[1],500+50*k)
-            visited_arr[node[0]][node[1]] = 1
-          }
-          if(node[1]-1>=0){
-            if(!visited_arr[node[0]][node[1]-1] && node_matrix[node[0]][node[1]-1]){
-              stack.push([node[0],node[1]-1])
-              in_path[node[0]][node[1]-1] = [node[0],node[1]]
-            }
-          }
-          if(node[0]+1<n){
-            if(!visited_arr[node[0]+1][node[1]] && node_matrix[node[0]+1][node[1]]){
-              stack.push([node[0]+1,node[1]])
-              in_path[node[0]+1][node[1]] = [node[0],node[1]]
-            }
-          }
-          if(node[1]+1<n){
-            if(!visited_arr[node[0]][node[1]+1] && node_matrix[node[0]][node[1]+1]){
-              stack.push([node[0],node[1]+1])
-              in_path[node[0]][node[1]+1] = [node[0],node[1]]
-            }
-          }
-          if(node[0]-1>=0){
-            if(!visited_arr[node[0]-1][node[1]] && node_matrix[node[0]-1][node[1]]){
-              stack.push([node[0]-1,node[1]])
-              in_path[node[0]-1][node[1]] = [node[0],node[1]]
-            }
-          }
-        }
-        return false;
-      }
-
       function trace_path(path_matrix, init, end, k){
         stack = [path_matrix[end[0]][end[1]]]
         while(1){
@@ -262,6 +139,15 @@
           mark_path(node[0],node[1],500+50*i)
           i+=1;
         }
+      }
+
+      function is_present(array, value_i, value_j){
+        for(var i=0; i<array.length; i++){
+          if(array[i][0]===value_i&&array[i][1]===value_j){
+            return [i];
+          }
+        }
+        return [];
       }
 
       function mark_visited(i,j,t){
@@ -280,6 +166,11 @@
       function vizualize_dfs(){
         dfs(get_matrix, init_i, init_j, end_i, end_j, n);
       }
+
+      function vizualize_dijkstra(){
+        dijkstra(get_matrix, init_i, init_j, end_i, end_j, n);
+      }
+
 
     </script>
 
