@@ -30,7 +30,7 @@ html,body{
 }
 
 .init{
-  background-color: brown;
+  background-color: red;
 }
 
 .end{
@@ -39,6 +39,10 @@ html,body{
 
 .visited{
   background-color: blue;
+}
+
+.path{
+  background-color: yellow !important;
 }
 
 .nav-link{
